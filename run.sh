@@ -15,5 +15,6 @@ IMAGE=kedro-docker
 
 exec docker run -it --rm \
     -v "$GIT_DIR":/home/kedro/work \
+    -p 4141:4141 \
     $OWNER/$IMAGE$VER start.sh
 
