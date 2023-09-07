@@ -24,9 +24,9 @@ To add packages, add them to './context/requirements.txt' (pip requirements form
 ### Run kedro viz
 
 * Inside the running container on your kedro proyect path, run:
-
-```sh
-kedro viz --host=0.0.0.0 --no-browser
-```
+    ```sh
+    kedro viz --host=0.0.0.0 --no-browser
+    ```
+    - You can use screen to run this command in a multiplexed terminal.
 
 * Open <http://127.0.0.1:4141> in your preferred browser.

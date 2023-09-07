@@ -72,7 +72,9 @@ RUN mkdir /usr/local/bin/before-start-root.d /usr/local/bin/before-start-user.d
 
 COPY 01_activate-conda-env.sh /usr/local/bin/before-start-user.d/
 
-RUN apt-get install --yes --no-install-recommends openjdk-11-jre-headless
+RUN apt-get install --yes --no-install-recommends \
+    openjdk-11-jre-headless\
+    screen
 
 USER ${NB_UID}
 
