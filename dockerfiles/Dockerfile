@@ -132,5 +132,9 @@ COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
+# Redefine kedro viz command
+RUN echo 'kedro() { if [ "$1" == viz ]; then /opt/conda/bin/kedro "$@" --host=0.0.0.0 --no-browser;\
+     else /opt/conda/bin/kedro "$@"; fi  }' >> /home/${NB_USER}/.bashrc
+
 ENTRYPOINT ["tini", "-g", "--"]
 # CMD ["start.sh"]
