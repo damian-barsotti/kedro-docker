@@ -95,6 +95,10 @@ RUN mkdir "/home/${NB_USER}/work" && \
 # Correct permissions
 # Do all this in a single RUN command to avoid duplicating all of the
 # files across image layers when the permissions change
+
+# ARG MAMBA_VERSION="1.5.3"
+ARG MAMBA_VERSION="latest"
+
 COPY --chown="${NB_UID}:${NB_GID}" initial-condarc "${CONDA_DIR}/.condarc"
 WORKDIR /tmp
 RUN set -x && \
@@ -104,7 +108,7 @@ RUN set -x && \
         arch="64"; \
     fi && \
     wget --progress=dot:giga -O /tmp/micromamba.tar.bz2 \
-        "https://micromamba.snakepit.net/api/micromamba/linux-${arch}/latest" && \
+        "https://micromamba.snakepit.net/api/micromamba/linux-${arch}/${MAMBA_VERSION}" && \
     tar -xvjf /tmp/micromamba.tar.bz2 --strip-components=1 bin/micromamba && \
     rm /tmp/micromamba.tar.bz2 && \
     PYTHON_SPECIFIER="python=${PYTHON_VERSION}" && \
@@ -116,10 +120,12 @@ RUN set -x && \
         --yes \
         "${PYTHON_SPECIFIER}" \
         'mamba' && \
-    rm micromamba && \
+    rm micromamba
+
+RUN \
     # Pin major.minor version of python
     mamba list python | grep '^python ' | tr -s ' ' | cut -d ' ' -f 1,2 >> "${CONDA_DIR}/conda-meta/pinned" && \
-    mamba clean --all -f -y && \
+    conda clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
